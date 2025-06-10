@@ -11,11 +11,16 @@
 提供結構化且可擴充的程式邏輯。
 
 2️⃣ 系統架構概覽
+
 🚦 感測器與輸出元件
+
 元件	功能
 紅外線 IR_L/IR_R	偵測地面黑線位置（循跡）
+
 超音波模組	偵測車前距離（避障）
+
 雙輪 DC 馬達	控制左右輪轉動（移動/轉向）
+
 LED 左/右燈	顯示當前車輛行動狀態（前進/轉彎）
 
 🧩 腳位對應
@@ -53,25 +58,40 @@ IR 模組 LOW 代表偵測到黑線。
 最後停止並返回循跡主流程。
 
 3.3 循跡行為控制
+
 IR_L	IR_R	動作	LED 狀態
+
 LOW	LOW	前進	左右 LED 亮
+
 LOW	HIGH	向左轉	左 LED 亮
+
 HIGH	LOW	向右轉	右 LED 亮
+
 HIGH	HIGH	停止	LED 全部關閉
 
 4️⃣ 動作函式設計
+
 函式名稱	動作內容	對應 LED 狀態
+
 moveForwardStep()	前進一步	左右 LED 同時亮
+
 turnLeftStep()	原地左轉	左 LED 亮
+
 turnRightStep()	原地右轉	右 LED 亮
+
 backward()	雙輪反轉（避障用）	LED 熄滅
+
 stopMotors()	所有馬達停止、LED 熄滅	LED 熄滅
 
+
 5️⃣ 實作步驟
+
 🪛 5.1 硬體接線
+
 依照腳位對應表將 IR 模組、超音波模組、馬達、LED 完成連接，注意 VCC 與 GND 正確接線。
 
 💻 5.2 程式撰寫
+
 初始化所有腳位與函式。
 
 撰寫 IR 判斷與超音波距離偵測邏輯。
@@ -81,13 +101,20 @@ stopMotors()	所有馬達停止、LED 熄滅	LED 熄滅
 在 loop() 中依感測器判斷執行對應動作。
 
 🔁 5.3 避障邏輯整合
+
 前方有障礙 → stopMotors() → delay() → backward() → turnLeft()（或右轉） → stopMotors() → 回歸循跡。
 
 ⚙️ 5.4 測試與調整
+
 參數名稱	建議值	說明
+
 SPEED_FORWARD	180	控制前進速度
+
 SPEED_TURN	180	控制轉彎速度
+
 STEP_TIME_FORWARD	100–150 ms	控制前進步長
+
 STEP_TIME_TURN	150–200 ms	控制轉向角度
+
 超音波距離閾值	15 cm	避障觸發距離
 
