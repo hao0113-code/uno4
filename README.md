@@ -61,7 +61,29 @@
    - 停止：兩燈皆滅
 
 ---
+➤ 程式功能分段
 
+void moveForwardStep()：前進步驟，包含啟動加速與燈號控制
+
+void turnLeftStep() / turnRightStep()：原地左/右轉與 LED 指示
+
+void stopMotors()：關閉馬達輸出與關燈
+
+long readDistance()：取得前方障礙距離（cm）
+
+➤ 主流程簡述
+
+loop:
+  讀取 IR_L, IR_R 與超音波距離
+  if (距離 < 15cm):
+    → 停止與熄燈
+  else if (雙 IR 為 LOW):
+    → 前進並雙燈亮
+  else if (偏左 or 偏右):
+    → 左/右轉並亮對應側燈
+  else:
+    → 停止並熄燈
+    
 ## 🚀 安裝與上傳
 
 1. 安裝 [Arduino IDE](https://www.arduino.cc/en/software)
@@ -83,6 +105,16 @@
 | `BOOST_TIME`        | 80     | 初次加速時間（ms）          |
 
 若出現轉向不靈敏、震動過大等情況，可調整以上參數進行優化。
+
+##測試紀錄與修正點
+
+🔧 初期燈號未亮，後補上 LED 腳位 pinMode 設定並整合控制函式。
+
+🔄 實驗中發現黑線反射不穩，加入 delay(30) 穩定讀值。
+
+🛑 障礙距離由 10 cm 提升至 15 cm，讓停止時間更足夠。
+
+✅ 完成避障後退功能後，車輛能自動轉向並回復循跡狀態。
 
 
 
